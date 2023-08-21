@@ -53,4 +53,3 @@ class PriceRouter {
 }
 
 export default PriceRouter
-
