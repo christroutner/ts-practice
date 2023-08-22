@@ -29,7 +29,7 @@ class CountryCodeScraper {
       // Store the textcontent in the above object
       country.name = $(el).children('a').text()
       country.iso3 = $(el).children('span').text()
-      console.log(country)
+      // console.log(country)
       // Populate countries array with country data
       countries.push(country)
     })

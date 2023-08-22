@@ -8,6 +8,7 @@ import { Sequelize } from 'sequelize'
 // Local libraries
 import PriceRouter from './routes/price.js'
 import CountryCodeScraper from './lib/scrape-country-code.js'
+import CountryCodeRouter from './routes/country-code.js'
 class ServerLib {
   constructor () {
     // State
@@ -28,8 +29,10 @@ class ServerLib {
       console.log('Starting application')
       // Scrape the data from the webpage before staring the webserver.
       const countryCodeScraper = new CountryCodeScraper()
-      await countryCodeScraper.getData()
+      const countries = await countryCodeScraper.getData()
       console.log('Scraped country code data from Wikipedia.')
+      // Instantiate the country-code route with the data
+      this.countryCodeRouter = new CountryCodeRouter(countries)
       // Start the PostreSQL database.
       this.sequelize = new Sequelize({
         dialect: 'postgres',
@@ -76,6 +79,7 @@ class ServerLib {
     // })
     // Attach the router libraries
     this.app.use('/price', this.priceRouter.router)
+    this.app.use('/countrycode', this.countryCodeRouter.router)
   }
 
   async shutdownPostgres () {
