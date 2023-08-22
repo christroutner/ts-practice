@@ -28,7 +28,8 @@ class ServerLib {
       console.log('Starting application')
       // Scrape the data from the webpage before staring the webserver.
       const countryCodeScraper = new CountryCodeScraper()
-      await countryCodeScraper.start()
+      await countryCodeScraper.getData()
+      console.log('Scraped country code data from Wikipedia.')
       // Start the PostreSQL database.
       this.sequelize = new Sequelize({
         dialect: 'postgres',
@@ -63,16 +64,16 @@ class ServerLib {
       // Top level function. Throw the error to stop the app.
       console.error('Error trying to start server: ', err)
       // Close the connection to the database.
-      this.shutdownPostgres()
+      this.shutdownPostgres().then(() => { }).catch((err) => { console.log(err) })
     }
   }
 
   // Attach router endpoints
   addRouters () {
-    this.app.get('/test', async (req, res) => {
-      const [results] = await this.sequelize.query('SELECT \'Hello World!\' AS "data";')
-      res.send(results)
-    })
+    // this.app.get('/test', async (req: Request, res: Response) => {
+    //   const [results] = await this.sequelize.query('SELECT \'Hello World!\' AS "data";')
+    //   res.send(results)
+    // })
     // Attach the router libraries
     this.app.use('/price', this.priceRouter.router)
   }

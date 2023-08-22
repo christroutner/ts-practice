@@ -40,7 +40,8 @@ class ServerLib {
 
       // Scrape the data from the webpage before staring the webserver.
       const countryCodeScraper = new CountryCodeScraper()
-      await countryCodeScraper.start()
+      await countryCodeScraper.getData()
+      console.log('Scraped country code data from Wikipedia.')
 
       // Start the PostreSQL database.
       this.sequelize = new Sequelize({
