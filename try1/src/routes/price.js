@@ -34,7 +34,7 @@ class PriceRouter {
         catch (err) {
             console.log('err: ', err);
             console.error('Error in getBchPrice(): ', err);
-            return this.errorHandler(err: any, res);
+            return this.errorHandler(err, res);
         }
     }
 }
