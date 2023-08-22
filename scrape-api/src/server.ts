@@ -1,13 +1,16 @@
 
-
 /*
   This file starts the REST API server.
 */
 
 import ServerLib from './serverLib.js'
 
-function startServer() {
+function startServer (): void {
   const serverLib = new ServerLib()
-  serverLib.start()
+
+  const startServer = async (): Promise<void> => {
+    await serverLib.start()
+  }
+  startServer().then(() => {}).catch((err) => { console.log(err) })
 }
 startServer()

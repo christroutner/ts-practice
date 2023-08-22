@@ -3,9 +3,17 @@
   https://www.freecodecamp.org/news/how-to-scrape-websites-with-node-js-and-cheerio/
 */
 
+// import cheerio from 'cheerio'
+// import pretty from 'pretty'
+
 class CountryCodeScraper {
-  async start(): Promise<Number> {
-    console.log('Country code scraper started.')
+  async start (): Promise<Number> {
+    //     const markup = `
+    // <ul class="fruits">
+    //   <li class="fruits__mango"> Mango </li>
+    //   <li class="fruits__apple"> Apple </li>
+    // </ul>
+    // `
 
     return 1
   }

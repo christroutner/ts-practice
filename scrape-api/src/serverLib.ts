@@ -3,9 +3,9 @@
 */
 
 // Public npm libraries
-import express, { Request, Response, Express } from 'express'
+import express, { Express } from 'express'
 import { Sequelize } from 'sequelize'
-import { initUser } from './models/User'
+// import { initUser } from './models/User'
 
 // Local libraries
 import PriceRouter from './routes/price.js'
@@ -18,11 +18,11 @@ class ServerLib {
   sequelize: Sequelize
   priceRouter: any
 
-  constructor() {
+  constructor () {
     // State
     this.app = express()
     this.server = null // placeholder
-    this.sequelize = null // placeholder
+    // this.sequelize = null // placeholder
 
     // Encapsulate dependencies
     this.priceRouter = new PriceRouter()
@@ -32,9 +32,9 @@ class ServerLib {
     this.addRouters = this.addRouters.bind(this)
     this.shutdownPostgres = this.shutdownPostgres.bind(this)
   }
-  
+
   // Start the server.
-  async start() {
+  async start (): Promise<void> {
     try {
       console.log('Starting application')
 
@@ -49,7 +49,7 @@ class ServerLib {
         username: 'root',
         password: 'secret',
         host: '127.0.0.1',
-        port: 5432,
+        port: 5432
         // Uncomment if you don't want to see the executed SQL requests in the logs
         // logging: false,
       })
@@ -73,33 +73,32 @@ class ServerLib {
       })
 
       // Add a handler when SIGTERM signal is sent by user using keyboard.
-      process.once('SIGTERM', async function () {
+      process.once('SIGTERM', function () {
         console.log('Stopping application')
-        await this.shutdownPostgres()
+        this.shutdownPostgres().then(() => {}).catch((err) => { console.log(err) })
         process.exit()
       })
-    
-    } catch(err) {
+    } catch (err) {
       // Top level function. Throw the error to stop the app.
       console.error('Error trying to start server: ', err)
 
       // Close the connection to the database.
-      this.shutdownPostgres()
+      this.shutdownPostgres().then(() => {}).catch((err) => { console.log(err) })
     }
   }
 
   // Attach router endpoints
-  addRouters() {
-    this.app.get('/test', async (req: Request, res: Response) => {
-      const [results] = await this.sequelize.query(`SELECT 'Hello World!' AS "data";`)
-      res.send(results)
-    })
+  addRouters (): void {
+    // this.app.get('/test', async (req: Request, res: Response) => {
+    //   const [results] = await this.sequelize.query('SELECT \'Hello World!\' AS "data";')
+    //   res.send(results)
+    // })
 
     // Attach the router libraries
     this.app.use('/price', this.priceRouter.router)
   }
 
-  async shutdownPostgres() {
+  async shutdownPostgres (): Promise<void> {
     this.server.close()
     await this.sequelize.close()
   }
