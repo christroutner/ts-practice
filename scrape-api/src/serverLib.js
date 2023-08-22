@@ -6,6 +6,7 @@ import express from 'express';
 import { Sequelize } from 'sequelize';
 // Local libraries
 import PriceRouter from './routes/price.js';
+import CountryCodeScraper from './lib/scrape-country-code.js';
 class ServerLib {
     constructor() {
         // State
@@ -23,6 +24,9 @@ class ServerLib {
     async start() {
         try {
             console.log('Starting application');
+            // Scrape the data from the webpage before staring the webserver.
+            const countryCodeScraper = new CountryCodeScraper();
+            await countryCodeScraper.start();
             // Start the PostreSQL database.
             this.sequelize = new Sequelize({
                 dialect: 'postgres',
