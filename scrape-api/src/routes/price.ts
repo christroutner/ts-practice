@@ -1,11 +1,11 @@
 // Public npm libraries
-import express, {Request, Response} from 'express'
-import axios from 'axios'
+import express, {NextFunction, Request, Response, Router} from 'express'
+import axios, {Axios} from 'axios'
 
 class PriceRouter {
     // Types
-    router: express.Router
-    axios: any
+    router: Router
+    axios: Axios
 
     constructor() {
         // Encapsulate dependencies
@@ -26,11 +26,11 @@ class PriceRouter {
         res.status(500)
     }
 
-    root(req, res, next) {
+    root(req: Request, res: Response, next: NextFunction) {
         return res.json({ status: 'price' })
     }
 
-    async getBchPrice(req, res, next) {
+    async getBchPrice(req: Request, res: Response, next: NextFunction) {
       try {
         const opt = {
             method: 'get',
